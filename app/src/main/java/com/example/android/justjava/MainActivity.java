@@ -1,5 +1,5 @@
 /**
- * IMPORTANT: Make sure you are using the correct package name. 
+ * IMPORTANT: Make sure you are using the correct package name.
  * This example uses the package name:
  * package com.example.android.justjava
  * If you get an error when copying this code into Android studio, update it to match teh package name found
@@ -7,7 +7,6 @@
  **/
 
 package com.example.android.justjava;
-
 
 
 import android.os.Bundle;
@@ -27,15 +26,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
+    int quantity = 0;
+    /**
+     * This method is called when the + button is clicked.
+     */
+    public void increment(View view) {
+        quantity = quantity + 1;
+        display(quantity);
+    }
+
+    /**
+     * This method is called when the - button is clicked.
+     */
+    public void decrement(View view) {
+        quantity = quantity - 1;
+        display(quantity);
+    }
 
     /**
      * This method is called when the order button is clicked.
      */
     public void submitOrder(View view) {
-        int quantity = 3;
-        display(quantity);
-        displayPrice(quantity * 5);
-    }
+      displayPrice(quantity * 5);
+}
 
     /**
      * This method displays the given quantity value on the screen.
