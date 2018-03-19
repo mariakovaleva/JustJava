@@ -11,7 +11,9 @@ package com.example.android.justjava;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
     int quantity = 0;
+    String creamStatus;
     /**
      * This method is called when the + button is clicked.
      */
@@ -46,11 +49,26 @@ public class MainActivity extends AppCompatActivity {
     /**
      * This method is called when the order button is clicked.
      */
+
     public void submitOrder(View view) {
         int price = quantity*5;
-        String priceMessage = "Total: $"+price+"\nThank you!";
+        Log.v("MainActivity", "The price is: "+price);
+        String priceMessage = "Total: $"+price+"\nThank you!"+"\nWhipped Cream: "+creamStatus;
         displayMessage(priceMessage);
 }
+
+    public void whippedCreamChecked(View view){
+        boolean creamOrdered = ((CheckBox) view).isChecked();
+        switch (view.getId())
+        {
+            case R.id.checkbox:
+                if (creamOrdered) creamStatus = "ordered";
+                else creamStatus = "none";
+                        break;
+
+        }
+    }
+
     /**
      * This method displays the given text on the screen.
      */
