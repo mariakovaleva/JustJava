@@ -53,7 +53,12 @@ public class MainActivity extends AppCompatActivity {
     public void submitOrder(View view) {
         int price = quantity*5;
         Log.v("MainActivity", "The price is: "+price);
-        String priceMessage = "Total: $"+price+"\nThank you!"+"\nWhipped Cream: "+creamStatus;
+
+        String priceMessage = "Name: Lyla the Labyrinth";
+        priceMessage += "\nQuantity: "+ quantity;
+        priceMessage += "\nTotal: $"+price;
+        priceMessage += "\nWhipped Cream: "+creamStatus;
+        priceMessage += "\nThank you!";
         displayMessage(priceMessage);
 }
 
