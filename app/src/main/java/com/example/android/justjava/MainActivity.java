@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+import android.content.Context;
 
 import java.text.NumberFormat;
 
@@ -27,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
     int quantity = 0;
+    Context context;
+
     /**
      * This method is called when the + button is clicked.
      */
@@ -47,31 +50,52 @@ public class MainActivity extends AppCompatActivity {
      * This method is called when the order button is clicked.
      */
     public void submitOrder(View view) {
-        int price = quantity*5;
-        String priceMessage = "Total: $"+price+"\nThank you!";
-        displayMessage(priceMessage);
-}
+        displayMessage(createOrderSummary());
+    }
+
+    /**
+     * Calculates the price of the order.
+     *  @param quantity is the number of cups of coffee ordered
+     * @param pricePerCup is the price of the cup of coffee
+     * */
+    private int calculatePrice(int quantity, int pricePerCup) {
+        return quantity * pricePerCup;
+                 }
+
+    /**
+     * Creates the summary of the order.
+     */
+    private String createOrderSummary(){
+        String orderSummaryMessage = "Name: Maria Kovaleva";
+        orderSummaryMessage += "\nQuantity: "+quantity;
+        orderSummaryMessage += "\nTotal: $"+calculatePrice(quantity, 5);
+        orderSummaryMessage += "\nThank you!";
+        return orderSummaryMessage;
+    }
+
     /**
      * This method displays the given text on the screen.
      */
     private void displayMessage(String message) {
-        TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
-        priceTextView.setText(message);
+        TextView orderSummaryTextView = (TextView) findViewById(R.id.order_summary_text_view);
+        orderSummaryTextView.setText(message);
     }
     /**
      * This method displays the given quantity value on the screen.
      */
-    private void display(int number) {
+    private void display(int money) {
         TextView quantityTextView = (TextView) findViewById(R.id.quantity_text_view);
-        quantityTextView.setText("" + number);
-    }
+        quantityTextView.setText("" + money);
+            }
 
     /**
      * This method displays the given price on the screen.
-     */
+
     private void displayPrice(int number) {
         TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
         priceTextView.setText(NumberFormat.getCurrencyInstance().format(number));
     }
-
+     */
 }
+
+
