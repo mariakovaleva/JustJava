@@ -29,7 +29,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
     int quantity = 0;
+<<<<<<< HEAD
     String creamStatus;
+=======
+    Context context;
+
     /**
      * This method is called when the + button is clicked.
      */
@@ -72,29 +76,40 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
         }
+
+    /**
+     * Calculates the price of the order.
+     *  @param quantity is the number of cups of coffee ordered
+     * @param pricePerCup is the price of the cup of coffee
+     * */
+
+    /**
+     * Creates the summary of the order.
+     */
+>>>>>>> 14e26106598eb87ffd6e953db7f36772682b7522
     }
 
     /**
      * This method displays the given text on the screen.
      */
     private void displayMessage(String message) {
-        TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
-        priceTextView.setText(message);
     }
     /**
      * This method displays the given quantity value on the screen.
      */
-    private void display(int number) {
+    private void display(int money) {
         TextView quantityTextView = (TextView) findViewById(R.id.quantity_text_view);
-        quantityTextView.setText("" + number);
-    }
+        quantityTextView.setText("" + money);
+            }
 
     /**
      * This method displays the given price on the screen.
-     */
+
     private void displayPrice(int number) {
         TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
         priceTextView.setText(NumberFormat.getCurrencyInstance().format(number));
     }
-
+     */
 }
+
+
