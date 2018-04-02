@@ -9,12 +9,15 @@
 package com.example.android.justjava;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * This app displays an order form to order coffee.
@@ -22,9 +25,6 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     int quantity = 0;
-    String creamStatus;
-    String chocoStatus;
-    int pricePerCup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,13 @@ public class MainActivity extends AppCompatActivity {
      */
     public void decrement(View view) {
         quantity = quantity - 1;
+
+        if (quantity < 0) {
+            quantity = 0;
+            Toast noNegative = Toast.makeText(getApplicationContext(), "No negatives allowed", Toast.LENGTH_SHORT);
+            noNegative.show();
+        }
+
         display(quantity);
     }
 
@@ -67,27 +74,40 @@ public class MainActivity extends AppCompatActivity {
      }
      */
 
-    /**
-     * Calculates the price of the order.
-     *
-     * @param quantity    is the number of cups of coffee ordered
-     * @param pricePerCup is the price of the cup of coffee
-     */
-    private int calculatePrice(int quantity, int pricePerCup) {
-        return quantity * pricePerCup;
-    }
 
     /**
      * This method is called when the order button is clicked
      */
 
+
+    /**
+     * Calculates the price of the order
+     */
+    private int calculatePrice (boolean addWhippedCream, boolean addChocolate) {
+        int basePrice = 5;
+
+        if (addWhippedCream){
+            basePrice += 1;
+        }
+
+        if (addChocolate) {
+            basePrice += 2;
+        }
+
+        return quantity * basePrice;
+    }
+
     public void submitOrder(View view) {
+
+        String creamStatus;
+        String chocoStatus;
 
         CheckBox whippedCreamCheckBox = (CheckBox) findViewById(R.id.cream_checkbox);
         boolean hasWhippedCream = whippedCreamCheckBox.isChecked();
         if (hasWhippedCream == true) {
 
             creamStatus = "Yes";
+
         } else {
 
             creamStatus = "No";
@@ -97,9 +117,10 @@ public class MainActivity extends AppCompatActivity {
 
         CheckBox chocolateCheckBox = (CheckBox) findViewById(R.id.choco_checkbox);
         boolean hasChocolate = chocolateCheckBox.isChecked();
-        if (hasChocolate == true) {
+        if (hasChocolate) {
 
             chocoStatus = "Yes";
+
         } else {
 
             chocoStatus = "No";
@@ -107,12 +128,16 @@ public class MainActivity extends AppCompatActivity {
         }
         Log.i("MainActivity", "User chose chocolate: " + hasChocolate);
 
-        int price = calculatePrice(quantity, pricePerCup);
+        int price = calculatePrice();
 
-        String priceMessage = createOrderSummary(price, hasWhippedCream, hasChocolate);
+        EditText nameInput = (EditText) findViewById(R.id.name_input);
+        String nameOfUser = nameInput.getText().toString();
+
+        String priceMessage = createOrderSummary(price, creamStatus, chocoStatus, nameOfUser);
         displayMessage(priceMessage);
 
     }
+
 
     /**
      * Creates the summary of the order.
@@ -122,14 +147,14 @@ public class MainActivity extends AppCompatActivity {
      *                     @param chocolate is whether the user wants chocolate topping
      * @return text summary
      */
-    private String createOrderSummary(int price, boolean whippedCream, boolean chocolate) {
+    private String createOrderSummary(int price, String whippedCream, String chocolate, String userName) {
         //how to get calculatePrice's value directly?
-        String orderSummaryMessage = "Name: Maria Kovaleva";
+        String orderSummaryMessage = "Name: "+ userName;
         orderSummaryMessage += "\nQuantity: " + quantity;
-        orderSummaryMessage += "\nTotal: $" + calculatePrice(quantity, 5);
+        orderSummaryMessage += "\nTotal: $" + price;
         orderSummaryMessage += "\nThank you!";
-        orderSummaryMessage += "\nAdd whipped cream? " + creamStatus;
-        orderSummaryMessage += "\nAdd chocolate? " + chocoStatus;
+        orderSummaryMessage += "\nAdd whipped cream? " + whippedCream;
+        orderSummaryMessage += "\nAdd chocolate? " + chocolate;
         return orderSummaryMessage;
     }
 
