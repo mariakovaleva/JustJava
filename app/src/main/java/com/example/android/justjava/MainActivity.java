@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
         CheckBox whippedCreamCheckBox = (CheckBox) findViewById(R.id.cream_checkbox);
         boolean hasWhippedCream = whippedCreamCheckBox.isChecked();
-        if (hasWhippedCream == true) {
+        if (hasWhippedCream) {
 
             creamStatus = "Yes";
 
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         }
         Log.i("MainActivity", "User chose chocolate: " + hasChocolate);
 
-        int price = calculatePrice();
+        int price = calculatePrice(hasWhippedCream, hasChocolate);
 
         EditText nameInput = (EditText) findViewById(R.id.name_input);
         String nameOfUser = nameInput.getText().toString();
