@@ -10,6 +10,8 @@ package com.example.android.justjava;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -24,7 +26,7 @@ import android.widget.Toast;
  */
 public class MainActivity extends AppCompatActivity {
 
-    int quantity = 0;
+    int quantity = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,13 @@ public class MainActivity extends AppCompatActivity {
      */
     public void increment(View view) {
         quantity = quantity + 1;
+
+        if (quantity > 100) {
+            quantity = 100;
+            Toast noCoffeeBulk = Toast.makeText(getApplicationContext(), "No more than 100 cups allowed", Toast.LENGTH_SHORT);
+            noCoffeeBulk.show();
+        }
+
         display(quantity);
     }
 
@@ -46,9 +55,9 @@ public class MainActivity extends AppCompatActivity {
     public void decrement(View view) {
         quantity = quantity - 1;
 
-        if (quantity < 0) {
-            quantity = 0;
-            Toast noNegative = Toast.makeText(getApplicationContext(), "No negatives allowed", Toast.LENGTH_SHORT);
+        if (quantity < 1) {
+            quantity = 1;
+            Toast noNegative = Toast.makeText(getApplicationContext(), "No less than 1 cup allowed", Toast.LENGTH_SHORT);
             noNegative.show();
         }
 
@@ -70,15 +79,6 @@ public class MainActivity extends AppCompatActivity {
 
      }
 
-     displayMessage(createOrderSummary());
-     }
-     */
-
-
-    /**
-     * This method is called when the order button is clicked
-     */
-
 
     /**
      * Calculates the price of the order
@@ -97,6 +97,9 @@ public class MainActivity extends AppCompatActivity {
         return quantity * basePrice;
     }
 
+    /**
+     * This method is called when the order button is clicked
+     */
     public void submitOrder(View view) {
 
         String creamStatus;
@@ -134,7 +137,15 @@ public class MainActivity extends AppCompatActivity {
         String nameOfUser = nameInput.getText().toString();
 
         String priceMessage = createOrderSummary(price, creamStatus, chocoStatus, nameOfUser);
-        displayMessage(priceMessage);
+
+        //an intent to open email app with order summary already in text
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Just Java order for " + nameOfUser);
+        intent.putExtra(Intent.EXTRA_TEXT, priceMessage);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
 
     }
 
@@ -151,20 +162,13 @@ public class MainActivity extends AppCompatActivity {
         //how to get calculatePrice's value directly?
         String orderSummaryMessage = "Name: "+ userName;
         orderSummaryMessage += "\nQuantity: " + quantity;
-        orderSummaryMessage += "\nTotal: $" + price;
-        orderSummaryMessage += "\nThank you!";
         orderSummaryMessage += "\nAdd whipped cream? " + whippedCream;
         orderSummaryMessage += "\nAdd chocolate? " + chocolate;
+        orderSummaryMessage += "\nTotal: $" + price;
+        orderSummaryMessage += "\nThank you!";
         return orderSummaryMessage;
     }
 
-    /**
-     * This method displays the given text on the screen.
-     */
-    private void displayMessage(String message) {
-        TextView orderSummaryTextView = (TextView) findViewById(R.id.order_summary_text_view);
-        orderSummaryTextView.setText(message);
-    }
 
     /**
      * This method displays the given quantity value on the screen.
